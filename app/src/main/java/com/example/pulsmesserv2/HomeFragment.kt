@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -99,9 +100,11 @@ class HomeFragment : Fragment(), ProgressDialogCallback  {
         return binding.root
     }
 
+
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
                 setupInsets(view.findViewById(R.id.homescreen))
                 initializeUI(view)

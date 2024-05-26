@@ -3,7 +3,14 @@
     <style name="Base.Theme.Pulsmesserv2" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">
+            @color/background
+        </item>
+        <item name="android:navigationBarColor">
+            @color/background
+        </item>
     </style>
+
 
     <style name="Theme.Pulsmesserv2" parent="Base.Theme.Pulsmesserv2" />
 </resources>
