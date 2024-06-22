@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-
+import com.example.pulsmesserv2.viewmodel.MyViewModel
 
 
 class BPMModel_RecyclerViewAdapter(
@@ -45,7 +45,7 @@ class BPMModel_RecyclerViewAdapter(
         if (item.selected) {
             holder.cardView.setCardBackgroundColor(context.getColor(R.color.selected))
         } else {
-            holder.cardView.setCardBackgroundColor(context.getColor(android.R.color.white))
+            holder.cardView.setCardBackgroundColor(context.getColor(R.color.foreground))
         }
         // CHECK IF USER SELECTED ITEMS TO REMOVE
 

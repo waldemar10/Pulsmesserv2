@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+    <item
+        android:id="@+id/action_data"
+        android:icon="@drawable/ic_data"
+        android:iconTint="#FFFFFF"
+        android:title="@string/Messdaten" />
+
+
+    <item
+        android:id="@+id/action_start"
+        android:icon="@drawable/circle_background"
+        android:iconTint="#FFFFFF"
+        android:title="@string/Messung_starten">
+
+
+    </item>
+    <item
+        android:id="@+id/action_scan"
+        android:icon="@drawable/ic_bluetooth_searching"
+        android:iconTint="#FFFFFF"
+
+        android:title="@string/scannen" />
+
+</menu>

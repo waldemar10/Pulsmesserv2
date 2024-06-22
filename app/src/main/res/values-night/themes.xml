@@ -4,10 +4,18 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="android:statusBarColor">
-            @color/background
+            @color/navground
         </item>
         <item name="android:navigationBarColor">
-            @color/background
+            @color/navground
         </item>
     </style>
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">2sp</item>
+    </style>
+
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">2sp</item>
+    </style>
+
 </resources>

@@ -3,4 +3,9 @@
     <string name="title_activity_protocols">Protocols</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottomappbar">BottomAppBar</string>
+    <string name="messen_starten">messen starten</string>
+    <string name="Messdaten">Messdaten</string>
+    <string name="Messung_starten">Messung starten</string>
+    <string name="scannen">Scannen</string>
 </resources>
