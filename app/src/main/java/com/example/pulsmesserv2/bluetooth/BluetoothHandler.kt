@@ -24,10 +24,12 @@ import androidx.core.app.ActivityCompat
 import com.example.pulsmesserv2.MainActivity
 import com.example.pulsmesserv2.utils.ProgressDialogCallback
 import com.example.pulsmesserv2.R
+import com.example.pulsmesserv2.fragments.MEASURING_TIME
 import com.example.pulsmesserv2.utils.ToastUtil
 
 import java.util.UUID
 
+const val SCAN_PERIOD: Long = 5000
 object BluetoothHandler {
 
     private lateinit var listener: BluetoothDataListener
@@ -45,7 +47,7 @@ object BluetoothHandler {
 
     private var connectedDeviceName: String? = null
     private var bluetoothGatt: BluetoothGatt? = null
-    private val SCAN_PERIOD: Long = 5000
+
     private const val REQUEST_BLUETOOTH_PERMISSION = 4
     fun initialize(listener: BluetoothDataListener) {
         this.listener = listener
@@ -94,7 +96,7 @@ object BluetoothHandler {
             Handler(Looper.getMainLooper()).postDelayed({
 
                 listener.onCurrentMeasuring(false)
-            }, 20000) // 20 Sekunden Timer
+            }, MEASURING_TIME) // Timer
         } else {
             println("Reset not successful")
         }
@@ -113,6 +115,7 @@ object BluetoothHandler {
 
                 val device = result.device
                 if(device.name !== null) {
+                    // Nur Devices mit Namen "BPM"
                     if(device.name.contains("BPM")) {
                         val deviceAddress = device.address
 
@@ -171,7 +174,7 @@ object BluetoothHandler {
                     }
                     .show()
             } else {
-                ToastUtil.showToast(context,"No devices found")
+                ToastUtil.showToast(context,"Kein Gerät gefunden")
             }
         }, SCAN_PERIOD)
     }
@@ -190,6 +193,7 @@ object BluetoothHandler {
             gatt.disconnect()
             gatt.close()
 
+            // Change UI to disconnected
             listener.onActiveDevice("Keine Verbindung")
             listener.onImageDeviceStatus(R.drawable.ic_no_connection)
             listener.onImageDeviceStatusColor(Color.RED)
@@ -312,7 +316,6 @@ object BluetoothHandler {
 
                 } else {
                     activity.runOnUiThread {
-
                         ToastUtil.showToast(context,"Failed to write characteristic")
                     }
                 }
@@ -324,7 +327,6 @@ object BluetoothHandler {
                 val value = characteristic.getStringValue(0).toFloatOrNull()
                 val intValue = value?.toInt()
                 Log.d("Received value", intValue.toString())
-
                 if (characteristic.uuid == CURR_CHARACTERISTIC_UUID) {
                     listener.onCurrentValueReceived(intValue ?: 0)
                 } else if (characteristic.uuid == AVG_CHARACTERISTIC_UUID) {

@@ -3,10 +3,8 @@ package com.example.pulsmesserv2.fragments
 import com.example.pulsmesserv2.viewmodel.MyViewModelFactory
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -30,7 +28,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 
 import com.example.pulsmesserv2.BPMModel
 import com.example.pulsmesserv2.viewmodel.BpmViewModel
@@ -41,7 +38,6 @@ import com.example.pulsmesserv2.R
 import com.example.pulsmesserv2.bluetooth.BluetoothDataListener
 import com.example.pulsmesserv2.bluetooth.BluetoothHandler
 import com.example.pulsmesserv2.bluetooth.BluetoothStatusListener
-import com.example.pulsmesserv2.bluetooth.BluetoothViewModel
 import com.example.pulsmesserv2.databinding.FragmentHomeBinding
 import com.example.pulsmesserv2.utils.Animations
 import com.example.pulsmesserv2.utils.ToastUtil
@@ -50,63 +46,46 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 private const val REQUEST_LOCATION_PERMISSION = 5
-const val filename = "bpm_data.txt"
+const val FILENAME = "bpm_data.txt"
+const val MEASURING_TIME:Long = 20000
 class HomeFragment : Fragment(), ProgressDialogCallback, BluetoothDataListener,
     BluetoothStatusListener {
-
 
     private var bpmModelList: ArrayList<BPMModel> = ArrayList()
 
     private val myViewModel: MyViewModel by viewModels { MyViewModelFactory(requireContext()) }
     private val bpmViewModel: BpmViewModel by activityViewModels()
 
-    private val bluetoothViewModel: BluetoothViewModel by activityViewModels()
-
     private lateinit var bAdapter: BluetoothAdapter
-
 
     private lateinit var txtPulse: TextView
     private lateinit var avgNum: TextView
     private lateinit var circle: ConstraintLayout
-
+    private lateinit var ivStatusConnection: ImageView
+    private lateinit var tvBluetoothStatus: TextView
     private lateinit var tvMeasuringTime: TextView
     private lateinit var tvMeasuringText: TextView
 
     private var progressDialog: Dialog? = null
-    private var saveDialog: Dialog? = null
-
-    private lateinit var ivStatusConnection: ImageView
-    private lateinit var tvBluetoothStatus: TextView
 
 
     private lateinit var itemData: MenuItem
     private lateinit var itemScan: MenuItem
     private lateinit var itemStart: MenuItem
 
-
     private var currentMeasuring: Boolean = true
 
     private var _binding: FragmentHomeBinding? = null
 
-
-
-
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-
-        bluetoothViewModel.scanCompleted.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                closeProgressDialog()
-            }
-        })
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         Log.d("HomeFragment", "myViewModel initialized: $myViewModel")
 
         return _binding!!.root
     }
-
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,7 +96,6 @@ class HomeFragment : Fragment(), ProgressDialogCallback, BluetoothDataListener,
         setupButtonListeners()
         BluetoothHandler.initialize(this)
     }
-
 
 @SuppressLint("SetTextI18n")
 override fun onCurrentValueReceived(value: Int) {
@@ -137,7 +115,7 @@ override fun onCurrentValueReceived(value: Int) {
             Animations(requireContext()).growAndShrink(circle)
             Animations(requireContext()).colorChange(circle)
 
-            object : CountDownTimer(20000, 1000) {
+            object : CountDownTimer(MEASURING_TIME, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
 
                     val secondsRemaining = millisUntilFinished / 1000
@@ -271,6 +249,7 @@ override fun onCurrentValueReceived(value: Int) {
 
         itemData.setOnMenuItemClickListener{
             ((requireActivity() as MainActivity)).navigateToProtocol()
+
             true
         }
     }
@@ -278,7 +257,7 @@ override fun onCurrentValueReceived(value: Int) {
 
 
     private fun setFile(): ArrayList<BPMModel>? {
-        val model = myViewModel.readFromFile(filename)
+        val model = myViewModel.readFromFile(FILENAME)
         return model
     }
 
@@ -306,11 +285,6 @@ override fun onCurrentValueReceived(value: Int) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-//        _binding = null
-
-    }
     private fun showProgressDialog() {
         progressDialog = Dialog(requireContext())
         progressDialog?.setContentView(R.layout.progress_dialog)
@@ -319,13 +293,8 @@ override fun onCurrentValueReceived(value: Int) {
         progressDialog?.show()
     }
 
-
     override fun closeProgressDialog() {
         progressDialog?.dismiss()
-    }
-
-    override fun closeSaveDialog() {
-        saveDialog?.dismiss()
     }
 
     override fun onBluetoothStateChanged(state: Int) {
@@ -348,5 +317,4 @@ override fun onCurrentValueReceived(value: Int) {
             }
         }
     }
-
 }

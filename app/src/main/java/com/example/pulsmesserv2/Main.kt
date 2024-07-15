@@ -55,11 +55,6 @@ class MainActivity : AppCompatActivity() {
         // Benutzer fragen, ob er Bluetooth anschalten möchte bei App Start
         initializeBluetooth()
 
-//        homeFragment = HomeFragment()
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.fragment_container, homeFragment!!)
-//            .commit()
-
         registerReceiver(bluetoothReceiver, IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED))
 
     }

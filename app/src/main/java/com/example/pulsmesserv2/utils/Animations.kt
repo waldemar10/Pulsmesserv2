@@ -30,7 +30,7 @@ class Animations(private val context: Context) {
             val color = animator.animatedValue as Int
             circle.backgroundTintList = ColorStateList.valueOf(color)
         }
-        colorChange.duration = 2000 // Dauer der Animation in Millisekunden
+        colorChange.duration = 2000
         colorChange.repeatMode = ValueAnimator.REVERSE
         colorChange.repeatCount = ValueAnimator.INFINITE
         colorChange.start()

@@ -29,6 +29,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+
 class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
     private val myViewModel: MyViewModel by activityViewModels { MyViewModelFactory(requireContext().applicationContext) }
 
@@ -45,10 +46,8 @@ class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        refreshRecyclerView(view)
-
         initializeUI(view)
+        refreshRecyclerView(view)
         updateDeleteButtonStatus()
         setupButtonListeners(view)
 
@@ -63,7 +62,7 @@ class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
         lineChart = it.findViewById(R.id.lineChart)
         btnDelete = it.findViewById(R.id.btnDelete)
         btnBack = it.findViewById(R.id.btnBack)
-
+        txtSize = it.findViewById(R.id.txtSize)
     }
     private fun setupButtonListeners(view: View){
         btnBack.setOnClickListener {
@@ -77,7 +76,7 @@ class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
                 .setPositiveButton("Ja") { _, _ ->
 
                     // Lösche die ausgewählten Einträge
-                    myViewModel.deleteSelectedItems("bpm_data.txt")
+                    myViewModel.deleteSelectedItems(FILENAME)
                     updateDeleteButtonStatus()
                     refreshRecyclerView(view)
                 }
@@ -91,7 +90,7 @@ class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
     }
     private fun updateDeleteButtonStatus() {
 
-        if (myViewModel.getItemsToRemove("bpm_data.txt")?.size!! > 0) {
+        if (myViewModel.getItemsToRemove(FILENAME)?.size!! > 0) {
             btnDelete.isEnabled = true
             btnDelete.setBackgroundColor(resources.getColor(R.color.red, null))
         } else {
@@ -166,16 +165,19 @@ class ProtocolFragment : Fragment(R.layout.fragment_protocol) {
 
     @SuppressLint("SetTextI18n")
     private fun refreshRecyclerView(view: View) {
-        val model = myViewModel.readFromFile("bpm_data.txt")
+        val model = myViewModel.readFromFile(FILENAME)
+
         if (model != null) {
             myViewModel.setBpmList(model)
             if (model.size > 0) {
+                println(model[0].date)
+                println(model.reversed()[0].date)
                 val reversedModel = ArrayList(model.reversed())
                 val adapter = BPMModel_RecyclerViewAdapter(
                     reversedModel, requireContext(), myViewModel, updateDeleteButtonCallback = { updateDeleteButtonStatus() })
                 val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-                txtSize = view.findViewById(R.id.txtSize)
+
                 txtSize.text = myViewModel.bpmList.value?.size.toString()+" / 100"
 
                 recyclerView.adapter = adapter
