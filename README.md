@@ -1,3 +1,6 @@
+Es beinhaltet nur den Code für die Android App. Die App wurde in Android Studio mit der Version Android Studio Jellyfish 2023.3.1 erstellt. Die App wurde für Android API 31+ entwickelt.
+
+
 # Pulsmesser Projekt
 
 
