@@ -87,7 +87,7 @@ NF30: Robuste Bauweise
     Lang: Der Pulsmesser soll von der Hand aus 1m Höhe (+ - 5cm) fallengelassen werden können. Es muss nach diesem Sturz voll funktionsfähig sein.
     Begründung: DIN EN 60068-2-31: Prüfung von Kippfallen und Umstürzen, vornehmlich für Geräte.
 
-## Ergebniss
+## Ergebnis
 ### App
 #### Homescreen
 ![HomeFragment](https://github.com/user-attachments/assets/38419d95-53ef-4aa2-9c87-ccfe345c413d)
